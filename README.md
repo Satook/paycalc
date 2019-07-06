@@ -29,6 +29,10 @@ paycalc-csv < people.csv > slips.csv
 If you source CSV has headers, add --skipfirst to the argument list to have
 paycalc-csv ignore the first line.
 
+**Note:** The expected CSV dialect is excel format, which uses quoted strings,
+comma separators and \r\n for line endings. Both \r and \n on their own are
+accepted too.
+
 # Tests
 
 Tests are just run using nose. In the repo root, just run
