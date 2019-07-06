@@ -1,5 +1,5 @@
 
-from decimal import *
+from decimal import Decimal, Context, ROUND_HALF_UP, localcontext
 from datetime import date, datetime, timedelta
 
 PAY_DATE_FMTS = [
@@ -60,3 +60,12 @@ def payperiod_string(m, y):
     enddate = date(nextmonth.year, nextmonth.month, 1) - timedelta(days=1)
 
     return "{:%d %b %Y} - {:%d %b %Y}".format(startdate, enddate)
+
+def calc_gross_income(annual_income):
+    '''
+    Return the gross income for the month.
+
+    :param annual_income: Their annual income
+    :returns: The months gross income rounded to the dollar
+    '''
+    return round_to_dollar(annual_income / Decimal(12))

@@ -69,3 +69,15 @@ def test_payperiod_string():
         got = pc.payperiod_string(*args)
 
         eq_(got, want)
+
+def test_calc_gross_income():
+    cases = [
+        (Decimal(60050), Decimal(5004)),
+        (Decimal(120000), Decimal(10000)),
+    ]
+
+    for (val, want) in cases:
+        got = pc.calc_gross_income(val)
+
+        assert isinstance(got, Decimal)
+        eq_(got, want)
