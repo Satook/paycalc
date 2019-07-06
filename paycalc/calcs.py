@@ -69,3 +69,14 @@ def calc_gross_income(annual_income):
     :returns: The months gross income rounded to the dollar
     '''
     return round_to_dollar(annual_income / Decimal(12))
+
+def calc_super_contrib(income, rate):
+    '''
+    Calculate the dollar super contribution amount based on `rate`
+
+    :param income: The income for the period
+    :param rate: The superannuation contribution rate
+    :returns: The dollar amount of superannuation to be contributed
+    '''
+
+    return round_to_dollar(income * rate)

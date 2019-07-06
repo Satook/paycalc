@@ -81,3 +81,14 @@ def test_calc_gross_income():
 
         assert isinstance(got, Decimal)
         eq_(got, want)
+
+def test_calc_super_contrib():
+    cases = [
+        ((5004, 0.09), 450),
+        ((10000, 0.1), 1000),
+    ]
+
+    for ((inc, rate), want) in cases:
+        got = pc.calc_super_contrib(inc, rate)
+
+        eq_(got, want)
