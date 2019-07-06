@@ -1,11 +1,41 @@
 
 # Install
 
+With the repo checked out, just run:
+
+```bash
+python setup.py install
+```
+
+Or to install in "developer mode", where the installed command references the
+checked out code, just run:
+
+```bash
+python setup.py develop
+```
+
 
 # Example usage
 
+The only command is paycalc-csv. Use the **--help** option to display help.
+
+paycalc-csv reads from STDIN and writes to STDOUT. If your source data is in
+*"people.csv"* and you want the results to *"slips.csv"*, just run
+
+```bash
+paycalc-csv < people.csv > slips.csv
+```
+
+If you source CSV has headers, add --skipfirst to the argument list to have
+paycalc-csv ignore the first line.
 
 # Tests
+
+Tests are just run using nose. In the repo root, just run
+
+```bash
+nosetests
+```
 
 # Assumptions
 
