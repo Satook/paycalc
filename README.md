@@ -14,10 +14,10 @@ checked out code, just run:
 python setup.py develop
 ```
 
-
 # Example usage
 
-The only command is paycalc-csv. Use the **--help** option to display help.
+Once installed, the command is *paycalc-csv*. Use the **--help** option to
+display help.
 
 paycalc-csv reads from STDIN and writes to STDOUT. If your source data is in
 *"people.csv"* and you want the results to *"slips.csv"*, just run
