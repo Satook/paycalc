@@ -11,7 +11,7 @@ setup(name='paycalc',
     packages=find_packages(),
     entry_points={
         'console_scripts': [
-            "paycalcs-csv = paycalc.cmd.csv:do_paycalc"
+            "paycalc-csv = paycalc.cmd.csv:do_paycalc"
         ]
     }
 )
