@@ -1,6 +1,7 @@
 
-import paycalc.tax as pt
 from nose.tools import eq_, raises
+
+import paycalc.tax as pt
 
 class TestTaxBrackets:
     def setUp(self):
