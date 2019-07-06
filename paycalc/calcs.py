@@ -69,9 +69,3 @@ def calc_gross_income(annual_income):
     :returns: The months gross income rounded to the dollar
     '''
     return round_to_dollar(annual_income / Decimal(12))
-
-def calc_income_tax(annual_income):
-    '''
-    Calculate the income tax for the month
-    '''
-    pass
