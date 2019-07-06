@@ -8,5 +8,5 @@ setup(name='paycalc',
     author='Andrew Stewart',
     author_email='andrewstewis@gmail.com',
     url='http://github.com/Satook/paycalc',
-    packages=['paycalc', 'paycalc.cmd'],
+    packages=find_packages(),
 )
