@@ -38,3 +38,21 @@ def calc_super_contrib(income, rate):
     '''
 
     return round_to_dollar(income * rate)
+
+def calculate_pay_slip(tax_bracket, annual_income, super_rate):
+    '''
+    Calculates the info for a monthly payslip.
+
+    :param tax_bracket: A TaxBrackets object for calculating tax.
+    :param annual_income: The persons gross annual income.
+    :param super_rate: The employer super contribution rate.
+    :returns: A (gross income, tax, net income, super contrib) tuple where all
+              values are Decimals
+    '''
+
+    monthly_gross = calc_gross_income(annual_income)
+    monthly_tax = round_to_dollar(tax_bracket.total_tax(annual_income) / Decimal(12))
+    net_income = monthly_gross - monthly_tax
+    monthly_super = calc_super_contrib(monthly_gross, super_rate)
+
+    return (monthly_gross, monthly_tax, net_income, monthly_super)

@@ -1,8 +1,10 @@
 
 from datetime import date
 from decimal import *
-import paycalc.calcs as pc
 from nose.tools import eq_, raises
+
+import paycalc.calcs as pc
+import paycalc.tax as pt
 
 def test_round_to_dollar():
     cases = [
@@ -38,5 +40,28 @@ def test_calc_super_contrib():
 
     for ((inc, rate), want) in cases:
         got = pc.calc_super_contrib(inc, rate)
+
+        eq_(got, want)
+
+def test_calculate_pay_slip():
+
+    # This is technically an integraton test, but it's not too naughty
+    brackets = pt.TaxBrackets(pt.TAX_BRACKETS_2018)
+
+    cases = [
+        (
+            (Decimal('60050'), Decimal('0.09')),
+            (Decimal('5004'), Decimal('922'), Decimal('4082'), Decimal('450'))
+        ),
+        (
+            (Decimal('120000'), Decimal('0.1')),
+            (Decimal('10000'), Decimal('2669'), Decimal('7331'), Decimal('1000'))
+        ),
+    ]
+
+    for (i, (val, want)) in enumerate(cases):
+        print("starting case: {}".format(i))
+
+        got = pc.calculate_pay_slip(brackets, *val)
 
         eq_(got, want)
