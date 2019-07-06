@@ -2,7 +2,9 @@
 import argparse
 import csv
 import sys
+import paycalc.tax as pt
 from paycalc import parse
+from paycalc.calcs import calculate_pay_slip
 
 def do_paycalc():
     '''
@@ -29,18 +31,26 @@ Payment month should be a "month year" string, e.g. "jan 2018" or "March 2020".
     # we don't have any arguments, we just wanted a nice --help answer :)
     args = parser.parse_args()
 
+    # we are only using this single set of tax brackets
+    brackets = pt.TaxBrackets(pt.TAX_BRACKETS_2018)
+
     process_csv(sys.stdin, sys.stdout, args.skipfirst)
 
-ROW_PRINTERS = [
-    lambda fn: fn,
-    lambda ln: ln,
-]
-
-def process_csv(filein, fileout, skip_first_row):
+def process_csv(tax_brackets, filein, fileout, skip_first_row):
 
     writer = csv.writer(fileout)
 
-    for in_row in parse.parse_csv(sys.stdin):
-        out_row = process_slip(in_row)
+    for (firstname, lastname, annual_salary, super_rate, pay_month) in parse.parse_csv(filein):
+        slip_data = calculate_pay_slip(tax_brackets, annual_salary, super_rate)
+        (monthly_gross, monthly_tax, net_income, monthly_super) = slip_data
 
-        writer.writerow(out_row)
+        out_data = (
+            "{} {}".format(firstname, lastname),
+            parse.payperiod_string(*pay_month),
+            str(monthly_gross),
+            str(monthly_tax),
+            str(net_income),
+            str(monthly_super)
+        )
+
+        writer.writerow(out_data)
