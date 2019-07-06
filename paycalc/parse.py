@@ -3,6 +3,7 @@ Helper functions to read and print data in CSV format
 '''
 
 import csv
+import re
 from decimal import Decimal
 from datetime import date, datetime, timedelta
 
@@ -10,6 +11,7 @@ PAY_DATE_FMTS = [
     '%B %Y',
     '%b %Y'
 ]
+PERCENT_RE = re.compile(r'[0-9]+(\.[0-9]+)?%')
 
 def parse_month_year(dstr):
     '''
@@ -48,7 +50,10 @@ def payperiod_string(m, y):
     return "{:%d %b %Y} - {:%d %b %Y}".format(startdate, enddate)
 
 def parse_percent(pstr):
-    pass
+    if PERCENT_RE.match(pstr) is None:
+        raise ValueError("Must be a positive number ending in %")
+
+    return Decimal(pstr[:-1]) / 100
 
 ROW_PARSERS = [
     lambda fn: fn,

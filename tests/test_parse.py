@@ -41,6 +41,36 @@ def test_parse_month_year_fails():
     for c in cases:
         make_it_fail(c)
 
+def test_parse_percent():
+    cases = [
+        ("1%", Decimal('0.01')),
+        ("1.5%", Decimal('0.015')),
+        ("25%", Decimal('0.25')),
+        ("25.478%", Decimal('0.25478')),
+        ("100%", Decimal('1')),
+        ("140%", Decimal('1.4'))
+    ]
+
+    for (i, (val, want)) in enumerate(cases):
+        print("starting case {}".format(i))
+        got = pp.parse_percent(val)
+
+        eq_(got, want)
+
+def test_parse_percent_fails():
+    cases = [
+        "-1%",
+        "40",
+        "bat"
+    ]
+
+    @raises(ValueError)
+    def make_it_fail(s):
+        pp.parse_percent(s)
+
+    for c in cases:
+        make_it_fail(c)
+
 def test_payperiod_string():
     cases = [
         ((1, 2019), "01 Jan 2019 - 31 Jan 2019"),
