@@ -1,6 +1,7 @@
 
 from datetime import date
 from decimal import *
+from io import StringIO
 import paycalc.parse as pp
 from nose.tools import eq_, raises
 
@@ -86,3 +87,44 @@ def test_payperiod_string():
         got = pp.payperiod_string(*args)
 
         eq_(got, want)
+
+def test_parse_csv():
+    csv_data = StringIO("""
+David,Rudd,60050,9%,March 2018
+Ryan,Chen,120000,10%,Mar 2018
+""".strip())
+
+    want = [
+        ("David", "Rudd", Decimal('60050'), Decimal('0.09'), (3, 2018)),
+        ("Ryan", "Chen", Decimal('120000'), Decimal('0.10'), (3, 2018))
+    ]
+
+    # capture so we can check length and not pass on no results :)
+    results = list(pp.parse_csv(csv_data))
+    eq_(len(results), len(want))
+
+    # now check the results
+    for (i, row) in enumerate(results):
+
+        print("checking row: {}".format(i))
+
+        eq_(row, want[i])
+
+def test_parse_csv_fails():
+    cases = [
+     ("Jim,Jam,Mc,5%,Mar 2018", (0, 2)),
+     ("Jim,Jam,42000,5,Mar 2018", (0, 3)),
+     ("Jim,Jam,42000,5%,Mar 20018", (0, 4)),
+    ]
+
+    for (i, (txt, (badline, badcol))) in enumerate(cases):
+        print("Starting {}".format(i))
+
+        try:
+            # consume the output
+            list(pp.parse_csv(StringIO(txt.strip())))
+        except pp.CSVParseError as e:
+            eq_(e.line, badline)
+            eq_(e.col, badcol)
+        else:
+            assert False, "We should have gotten an exception"

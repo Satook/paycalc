@@ -3,6 +3,7 @@ Helper functions to read and print data in CSV format
 '''
 
 import csv
+import decimal
 import re
 from decimal import Decimal
 from datetime import date, datetime, timedelta
@@ -12,6 +13,15 @@ PAY_DATE_FMTS = [
     '%b %Y'
 ]
 PERCENT_RE = re.compile(r'[0-9]+(\.[0-9]+)?%')
+
+class CSVParseError(Exception):
+    def __init__(self, line, col, msg):
+        super(CSVParseError, self).__init__(
+            "Error parsing CSV data line:{}, col:{}, msg:{}".format(line, col, msg)
+        )
+        self.line = line
+        self.col = col
+        self.msg = msg
 
 def parse_month_year(dstr):
     '''
@@ -63,7 +73,7 @@ ROW_PARSERS = [
     parse_month_year
 ]
 
-def parse_csv(filein):
+def parse_csv(filein, skip_first_row=False):
     '''
     Reads in CSV rows from filein, yielding parsed rows.
 
@@ -77,7 +87,31 @@ def parse_csv(filein):
     :raises: ValueError if a row is not valid
     '''
 
+    # helper func for useful exceptions
+    def try_parse(line, col, val, parser):
+        try:
+            return parser(val)
+        except ValueError as e:
+            # we use these
+            raise CSVParseError(line, col, e.args)
+        except decimal.InvalidOperation as e:
+            # decimal uses this
+            raise CSVParseError(line, col, e.args)
+
     reader = csv.reader(filein)
+    skipped = not skip_first_row
 
     for (i, row) in enumerate(reader):
-        pass
+        # if we haven't skipped yet, do so and continue on
+        if not skipped:
+            skipped = True
+            continue
+
+        # try to parse the columns
+        row_data = [
+            try_parse(i, j, val, p)
+
+            for ((j, val), p) in zip(enumerate(row), ROW_PARSERS)
+        ]
+
+        yield tuple(row_data)
