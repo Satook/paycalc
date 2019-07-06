@@ -54,3 +54,18 @@ def test_parse_month_year_fails():
 
     for c in cases:
         make_it_fail(c)
+
+def test_payperiod_string():
+    cases = [
+        ((1, 2019), "01 Jan 2019 - 31 Jan 2019"),
+        ((2, 2017), "01 Feb 2017 - 28 Feb 2017"),
+        ((3, 2016), "01 Mar 2016 - 31 Mar 2016"),
+        ((6, 2018), "01 Jun 2018 - 30 Jun 2018"),
+        ((2, 2020), "01 Feb 2020 - 29 Feb 2020"),
+        ((2, 2000), "01 Feb 2000 - 29 Feb 2000"),
+    ]
+
+    for (args, want) in cases:
+        got = pc.payperiod_string(*args)
+
+        eq_(got, want)

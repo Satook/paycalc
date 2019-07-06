@@ -1,6 +1,6 @@
 
 from decimal import *
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 PAY_DATE_FMTS = [
     '%B %Y',
@@ -47,8 +47,16 @@ def parse_month_year(dstr):
 
     raise ValueError("\"{}\" is not valid".format(dstr))
 
-def date_to_payperiod(d):
+def payperiod_string(m, y):
     '''
-    Given a specific date, returns the pay period as a string date range
+    Given a month and year, returns the pay period as a string date range
+
+    :param m: The month as an integer, i.e. 1-12
+    :param y: The full year as an integer, e.g. 2019
+    :returns: A string that describes the entire month, "01 Mar 2019 - 31 Mar 2019"
     '''
-    pass
+    startdate = date(y, m, 1)
+    nextmonth = startdate + timedelta(days=32)
+    enddate = date(nextmonth.year, nextmonth.month, 1) - timedelta(days=1)
+
+    return "{:%d %b %Y} - {:%d %b %Y}".format(startdate, enddate)
