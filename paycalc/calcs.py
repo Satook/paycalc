@@ -63,9 +63,15 @@ def payperiod_string(m, y):
 
 def calc_gross_income(annual_income):
     '''
-    Return the gross income for the month.
+    Calculate the gross income for the month.
 
     :param annual_income: Their annual income
     :returns: The months gross income rounded to the dollar
     '''
     return round_to_dollar(annual_income / Decimal(12))
+
+def calc_income_tax(annual_income):
+    '''
+    Calculate the income tax for the month
+    '''
+    pass
