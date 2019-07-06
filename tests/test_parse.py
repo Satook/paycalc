@@ -32,6 +32,7 @@ def test_parse_month_year_fails():
         "jazuaray 2019",
         "january 20019",
         "movember 2019",
+        "Mon jan 2019 42",
     ]
 
     @raises(ValueError)
