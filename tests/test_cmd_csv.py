@@ -44,6 +44,10 @@ Ryan Chen,01 Feb 2020 - 29 Feb 2020,10000,2669,7331,1000\r
         self.check_out(self.rawWant.partition('\r\n')[2])
 
     def with_patched(self, argv, f):
+        '''
+        Patches stdin, stdout and argv for the duration of f()
+        '''
+
         try:
             # patch out stdin/stdout/argv
             orig_stdout = sys.stdout
