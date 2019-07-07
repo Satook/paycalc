@@ -40,7 +40,7 @@ def process_csv(tax_brackets, filein, fileout, skip_first_row):
 
     writer = csv.writer(fileout)
 
-    for (firstname, lastname, annual_salary, super_rate, pay_month) in parse.parse_csv(filein):
+    for (firstname, lastname, annual_salary, super_rate, pay_month) in parse.parse_csv(filein, skip_first_row):
         slip_data = calculate_pay_slip(tax_brackets, annual_salary, super_rate)
         (monthly_gross, monthly_tax, net_income, monthly_super) = slip_data
 
