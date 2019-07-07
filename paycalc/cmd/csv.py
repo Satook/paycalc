@@ -6,11 +6,14 @@ import paycalc.tax as pt
 from paycalc import parse
 from paycalc.calcs import calculate_pay_slip
 
-def do_paycalc():
+def do_paycalc(argv=None):
     '''
     An entry point that takes in a CSV data and prints the resulting pay
     slip data to stdout.
+
+    :param argv: If not None, these arguments will be used instead of sys.argv.
     '''
+
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawTextHelpFormatter,
         description="""
@@ -29,7 +32,7 @@ Payment month should be a "month year" string, e.g. "jan 2018" or "March 2020".
     parser.add_argument('--skipfirst', action='store_true', help='Skip the first line, often a header')
 
     # we don't have any arguments, we just wanted a nice --help answer :)
-    args = parser.parse_args()
+    args = parser.parse_args(args=argv)
 
     # we are only using this single set of tax brackets
     brackets = pt.TaxBrackets(pt.TAX_BRACKETS_2018)

@@ -43,43 +43,39 @@ Ryan Chen,01 Feb 2020 - 29 Feb 2020,10000,2669,7331,1000\r
 
         self.check_out(self.rawWant.partition('\r\n')[2])
 
-    def with_patched(self, argv, f):
+    def with_patched(self, f):
         '''
-        Patches stdin, stdout and argv for the duration of f()
+        Patches stdin & stdout for the duration of f()
         '''
 
         try:
             # patch out stdin/stdout/argv
             orig_stdout = sys.stdout
             orig_stdin = sys.stdin
-            orig_argv = sys.argv
             sys.stdout = self.csv_out
             sys.stdin = self.csv_in
-            sys.argv = argv
 
             f()
 
         finally:
             sys.stdout = orig_stdout
             sys.stdin = orig_stdin
-            sys.argv = orig_argv
 
     def test_main_noskip(self):
         # do some monkey patching
         def doWork():
-            pcsv.do_paycalc()
+            pcsv.do_paycalc([])
 
             self.check_out(self.rawWant)
 
-        self.with_patched(sys.argv, doWork)
+        self.with_patched(doWork)
 
     def test_main_skipfirst(self):
         # do some monkey patching
         def doWork():
-            pcsv.do_paycalc()
+            pcsv.do_paycalc(["--skipfirst"])
 
             self.check_out(self.rawWant.partition('\r\n')[2])
 
         # monkey argv
-        argv = [sys.argv[0], "--skipfirst"]
-        self.with_patched(argv, doWork)
+        self.with_patched(doWork)
