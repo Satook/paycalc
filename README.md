@@ -52,9 +52,9 @@ coverage across all source code in a directory named `cover`.
 
 # Assumptions
 
- #. Will be run with an en_US or en_AU locale. Month names are expected in the
+ 1. Will be run with an en_US or en_AU locale. Month names are expected in the
     correct format for the current locale.
 
- #. That all intermediary calculation can be performed at high (28 digit)
+ 2. That all intermediary calculation can be performed at high (28 digit)
     precision but named values, e.g. gross income, tax, etc should be rounded
     before their use in further calculations.
