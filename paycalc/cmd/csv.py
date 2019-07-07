@@ -34,7 +34,7 @@ Payment month should be a "month year" string, e.g. "jan 2018" or "March 2020".
     # we are only using this single set of tax brackets
     brackets = pt.TaxBrackets(pt.TAX_BRACKETS_2018)
 
-    process_csv(sys.stdin, sys.stdout, args.skipfirst)
+    process_csv(brackets, sys.stdin, sys.stdout, args.skipfirst)
 
 def process_csv(tax_brackets, filein, fileout, skip_first_row):
 
