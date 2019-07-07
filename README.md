@@ -41,6 +41,15 @@ Tests are just run using nose. In the repo root, just run
 nosetests
 ```
 
+To see code coverage:
+
+```bash
+nosetests --cover-html --cover-html-dir=cover --with-coverage --cover-package paycalc
+```
+
+This will print out a coverage summary and generate a set of html files that show
+coverage across all source code in a directory named `cover`.
+
 # Assumptions
 
  #. Will be run with an en_US or en_AU locale. Month names are expected in the
