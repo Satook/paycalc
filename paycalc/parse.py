@@ -15,6 +15,12 @@ PAY_DATE_FMTS = [
 PERCENT_RE = re.compile(r'[0-9]+(\.[0-9]+)?%')
 
 class CSVParseError(Exception):
+    '''
+    Error, with context, that is raised during CSV parsing.
+
+    line, col and msg properties allow useful messages.
+    '''
+
     def __init__(self, line, col, msg):
         super(CSVParseError, self).__init__(
             "Error parsing CSV data line:{}, col:{}, msg:{}".format(line, col, msg)
@@ -60,6 +66,16 @@ def payperiod_string(m, y):
     return "{:%d %b %Y} - {:%d %b %Y}".format(startdate, enddate)
 
 def parse_percent(pstr):
+    '''
+    Parses a percentage string. The string must end in % and can have decimals
+
+    Up to 28 digits of precision will be retained.
+
+    :param pstr: The percentage string to parse.
+    :returns: A Decimal value that represents the percentage as a fraction. E.g.
+              10% -> Decimal('0.1')
+    '''
+
     if PERCENT_RE.match(pstr) is None:
         raise ValueError("Must be a positive number ending in %")
 

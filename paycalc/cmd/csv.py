@@ -37,6 +37,16 @@ Payment month should be a "month year" string, e.g. "jan 2018" or "March 2020".
     process_csv(brackets, sys.stdin, sys.stdout, args.skipfirst)
 
 def process_csv(tax_brackets, filein, fileout, skip_first_row):
+    '''
+    Runs the parsing and processing of CSV based data.
+
+    :param tax_brackets: The paycalc.tax.TaxBrackets object to use for calculating
+                         annual tax owed.
+    :param filein: A file-like object from which CSV data will be read.
+    :param fileout: A file-like object into which CSV formatted payslips data
+                    will be written.
+    :param skip_first_row: If True, the first line of data in filein will be ignored.
+    '''
 
     writer = csv.writer(fileout)
 
