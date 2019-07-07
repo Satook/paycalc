@@ -1,6 +1,8 @@
 
 # Install
 
+This has been developed and tested against Python 3.7.3.
+
 With the repo checked out, just run:
 
 ```bash
